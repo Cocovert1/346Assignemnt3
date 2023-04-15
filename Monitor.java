@@ -89,6 +89,7 @@ public class Monitor {
 				// roundtable (you can see it as a circular array)
 				// and like a circular array, once you reach the end of the array, you need to
 				// go back to the start, and we use % for that.
+				// we added the queue so that we don't run into starvation
 
 				// so basically what we are doing here is checking if left and right are not
 				// eating, and if we are hungry, then we can start eating.
@@ -157,6 +158,7 @@ public class Monitor {
 			// the philosopher can talk
 			is_talking = true;
 		}
+		is_talking = true;
 	}
 
 	/**
