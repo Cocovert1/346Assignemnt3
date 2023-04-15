@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 
 /**
  * Class Monitor
@@ -5,6 +6,32 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
+
+class Queue {
+	private LinkedList<Integer> queueList = new LinkedList<Integer>();
+
+	public void enqueue(int element) {
+		queueList.addLast(element);
+	}
+
+	public int dequeue() {
+		if (!isEmpty()) {
+			return queueList.removeFirst();
+		}
+		return -1;
+	}
+
+	public int peek() {
+		if (!isEmpty()) {
+			return queueList.getFirst();
+		}
+		return -1;
+	}
+
+	public boolean isEmpty() {
+		return queueList.isEmpty();
+	}
+}
 
 public class Monitor {
 	/*
@@ -21,6 +48,9 @@ public class Monitor {
 	private int nbrPhilosopher;
 	private STATE[] state;
 	private boolean is_talking;
+	private Queue list;
+
+	// test
 
 	/**
 	 * Constructor
@@ -37,6 +67,9 @@ public class Monitor {
 
 		// no philosopher should talk at the start
 		is_talking = false;
+
+		// test
+		list = new Queue();
 	}
 
 	/*
@@ -61,7 +94,7 @@ public class Monitor {
 				// eating, and if we are hungry, then we can start eating.
 				if (state[(pos + 1) % nbrPhilosopher] != STATE.EATING
 						&& state[(pos + (nbrPhilosopher - 1)) % nbrPhilosopher] != STATE.EATING
-						&& state[pos] == STATE.HUNGRY) {
+						&& state[pos] == STATE.HUNGRY && list.peek() == pos + 1) {
 					state[pos] = STATE.EATING; // philosopher eats
 					break;
 				} else {
@@ -87,7 +120,9 @@ public class Monitor {
 		// 5. remove him from hungry list since state is eating now
 		int pos = piTID - 1;
 		state[pos] = STATE.HUNGRY;
+		list.enqueue(piTID);
 		canEat(pos);
+		list.dequeue();
 	}
 
 	/**
